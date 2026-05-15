@@ -17,11 +17,14 @@ let snake = [
 let food = { x: 5, y: 5 };
 let gameLoop;
 let isPaused = false;
+let changingDirection = false; // 用來防止在一個 frame 內多次改變方向
 
 // 監聽鍵盤事件
 document.addEventListener('keydown', changeDirection);
 
 function changeDirection(event) {
+    if (changingDirection) return; // 如果這個 tick 已經改過方向了，就直接回傳
+
     const LEFT_KEY = 37;
     const RIGHT_KEY = 39;
     const UP_KEY = 38;
@@ -41,18 +44,22 @@ function changeDirection(event) {
     if ((keyPressed === LEFT_KEY || keyPressed === A_KEY) && !goingRight) {
         dx = -1;
         dy = 0;
+        changingDirection = true;
     }
     if ((keyPressed === UP_KEY || keyPressed === W_KEY) && !goingDown) {
         dx = 0;
         dy = -1;
+        changingDirection = true;
     }
     if ((keyPressed === RIGHT_KEY || keyPressed === D_KEY) && !goingLeft) {
         dx = 1;
         dy = 0;
+        changingDirection = true;
     }
     if ((keyPressed === DOWN_KEY || keyPressed === S_KEY) && !goingUp) {
         dx = 0;
         dy = 1;
+        changingDirection = true;
     }
 
     // 如果遊戲還沒開始（dx, dy 都是 0），按任意鍵開始
@@ -67,6 +74,7 @@ function startGame() {
 }
 
 function draw() {
+    changingDirection = false; // 每個 tick 開始時重設 flag
     moveSnake();
     if (checkGameOver()) {
         handleGameOver();
@@ -78,14 +86,17 @@ function draw() {
 }
 
 function clearCanvas() {
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 function drawSnake() {
     ctx.fillStyle = '#00ff00';
     ctx.strokeStyle = '#006400';
-    snake.forEach(part => {
+    snake.forEach((part, index) => {
+        // 蛇頭顏色稍微深一點
+        if (index === 0) ctx.fillStyle = '#00cc00';
+        else ctx.fillStyle = '#00ff00';
+        
         ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
         ctx.strokeRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
     });
@@ -111,9 +122,11 @@ function createFood() {
     food.y = Math.floor(Math.random() * tileCount);
     
     // 確保食物不會出現在蛇身上
+    let foodOnSnake = false;
     snake.forEach(part => {
-        if (part.x === food.x && part.y === food.y) createFood();
+        if (part.x === food.x && part.y === food.y) foodOnSnake = true;
     });
+    if (foodOnSnake) createFood();
 }
 
 function drawFood() {
@@ -129,8 +142,9 @@ function checkGameOver() {
         return true;
     }
     
-    // 撞到自己
-    for (let i = 1; i < snake.length; i++) {
+    // 撞到自己 (從第 2 節開始檢查，因為第 1 節就是頭)
+    // 這裡 i 從 4 開始檢查是一個優化，因為蛇長度小於 5 以前不可能撞到自己
+    for (let i = 4; i < snake.length; i++) {
         if (head.x === snake[i].x && head.y === snake[i].y) {
             return true;
         }
@@ -150,10 +164,11 @@ function resetGame() {
     scoreElement.innerText = score;
     dx = 0;
     dy = 0;
+    // 初始位置改為橫向，避免一開始按向下就撞到自己
     snake = [
         { x: 10, y: 10 },
-        { x: 10, y: 11 },
-        { x: 10, y: 12 }
+        { x: 9, y: 10 },
+        { x: 8, y: 10 }
     ];
     createFood();
     gameOverElement.style.display = 'none';
@@ -163,6 +178,5 @@ function resetGame() {
 }
 
 // 初始渲染
-clearCanvas();
-drawSnake();
-drawFood();
+resetGame();
+

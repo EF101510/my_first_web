@@ -2,7 +2,7 @@
 :root {
     --primary-color: #333;
     --bg-color: #f4f4f4;
-    --canvas-bg: #000;
+    --canvas-bg: #2d5a27; /* 草地深綠色作為畫布背景 */
     --snake-color: #00ff00;
     --food-color: #ff0000;
     --text-color: #333;
@@ -23,11 +23,17 @@ body {
 
 .container {
     text-align: center;
+    padding: 30px;
+    border-radius: 15px;
 }
 
 canvas {
-    border: 5px solid var(--primary-color);
+    border: 5px solid #4caf50;
     background-color: var(--canvas-bg);
+    /* 僅在畫布上使用草地漸層 */
+    background-image: 
+        radial-gradient(circle at 10% 20%, rgba(45, 90, 39, 1) 0%, rgba(34, 68, 30, 1) 90%),
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 2px, transparent 2px, transparent 10px);
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
@@ -39,11 +45,12 @@ canvas {
 .nav-link {
     margin-top: 20px;
     text-decoration: none;
-    color: #007bff;
+    color: #4caf50;
     font-weight: bold;
 }
 
 .nav-link:hover {
+    color: #45a049;
     text-decoration: underline;
 }
 
@@ -51,7 +58,7 @@ button {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
-    background-color: var(--primary-color);
+    background-color: #4caf50;
     color: white;
     border: none;
     border-radius: 5px;
@@ -59,5 +66,5 @@ button {
 }
 
 button:hover {
-    background-color: #555;
+    background-color: #45a049;
 }
