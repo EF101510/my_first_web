@@ -25,6 +25,58 @@ body {
     text-align: center;
     padding: 30px;
     border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.game-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.rules-panel {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    max-width: 250px;
+    border: 1px solid #4caf50;
+    color: #333;
+}
+
+.rules-panel h3 {
+    margin-top: 0;
+    color: #2d5a27;
+    border-bottom: 2px solid #4caf50;
+    padding-bottom: 5px;
+}
+
+.rules-panel ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.rules-panel li {
+    margin-bottom: 8px;
+}
+
+.controls-info {
+    font-size: 0.9em;
+}
+
+.key-cap {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-family: monospace;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 0 #bbb;
 }
 
 canvas {

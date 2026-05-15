@@ -1,12 +1,16 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const scoreElement = document.getElementById('score');
+const highScoreElement = document.getElementById('highScore');
 const gameOverElement = document.getElementById('game-over');
 
 const gridSize = 20;
 const tileCount = canvas.width / gridSize;
 
 let score = 0;
+let highScore = localStorage.getItem('snakeHighScore') || 0;
+highScoreElement.innerText = highScore;
+
 let dx = 0;
 let dy = 0;
 let snake = [
@@ -33,8 +37,23 @@ function changeDirection(event) {
     const A_KEY = 65;
     const S_KEY = 83;
     const D_KEY = 68;
+    const R_KEY = 82;
+    const H_KEY = 72;
 
     const keyPressed = event.keyCode;
+
+    // R: 重新開始
+    if (keyPressed === R_KEY) {
+        resetGame();
+        return;
+    }
+
+    // H: 回首頁
+    if (keyPressed === H_KEY) {
+        window.location.href = 'index.html';
+        return;
+    }
+
     const goingUp = dy === -1;
     const goingDown = dy === 1;
     const goingRight = dx === 1;
@@ -111,6 +130,14 @@ function moveSnake() {
     if (head.x === food.x && head.y === food.y) {
         score += 10;
         scoreElement.innerText = score;
+        
+        // 更新最高紀錄
+        if (score > highScore) {
+            highScore = score;
+            highScoreElement.innerText = highScore;
+            localStorage.setItem('snakeHighScore', highScore);
+        }
+        
         createFood();
     } else {
         snake.pop();

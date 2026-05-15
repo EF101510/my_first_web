@@ -10,12 +10,42 @@
 <body>
     <div class="container">
         <h1>貪吃蛇遊戲</h1>
-        <div class="score-container">分數: <span id="score">0</span></div>
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
-        <div id="game-over" style="display: none;">
-            <h2>遊戲結束!</h2>
-            <button onclick="resetGame()">重新開始</button>
+        <div class="score-container">
+            分數: <span id="score">0</span> | 
+            最高紀錄: <span id="highScore">0</span>
         </div>
+
+        <div class="game-layout">
+            <div>
+                <canvas id="gameCanvas" width="400" height="400"></canvas>
+                <div id="game-over" style="display: none;">
+                    <h2>遊戲結束!</h2>
+                    <button onclick="resetGame()">重新開始</button>
+                </div>
+            </div>
+
+            <div class="rules-panel">
+                <h3>遊戲規則</h3>
+                <ul>
+                    <li>控制蛇去吃紅色方塊（食物）。</li>
+                    <li>每吃到一個食物，分數加 10，蛇身也會變長。</li>
+                    <li>撞到牆壁或自己的身體，遊戲就會結束。</li>
+                </ul>
+
+                <h3>操作說明</h3>
+                <div class="controls-info">
+                    <p><strong>移動：</strong><br>
+                        使用 <span class="key-cap">↑</span> <span class="key-cap">↓</span> <span class="key-cap">←</span> <span class="key-cap">→</span><br>
+                        或 <span class="key-cap">W</span> <span class="key-cap">A</span> <span class="key-cap">S</span> <span class="key-cap">D</span>
+                    </p>
+                    <p><strong>其他：</strong><br>
+                        <span class="key-cap">R</span> 重新開始遊戲<br>
+                        <span class="key-cap">H</span> 返回網站首頁
+                    </p>
+                </div>
+            </div>
+        </div>
+
         <br>
         <a href="index.html" class="nav-link">回首頁</a>
     </div>
